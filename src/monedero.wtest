@@ -1,0 +1,30 @@
+import monedero.*
+
+describe "Monedero" {
+	
+	const monedero = new Monedero()
+	
+	test "poner plata" {
+		monedero.ponerPlata(100)
+		assert.equals(100, monedero.plataActual())
+	}
+
+	test "intentar sacar mas plata de la que tengo" {
+		assert.throwsExceptionWithMessage("no hay plata suficiente", {
+			monedero.sacarPlata(1)
+		})
+	}
+	
+	test "intentar sacar mas plata del limite" {
+		monedero.ponerPlata(100000)
+		assert.throwsExceptionWithMessage("no puede superar el limite de retiro", {
+			monedero.sacarPlata(20001)
+		})
+	}
+
+	test "sacar plata si tengo suficiente" {
+		monedero.ponerPlata(1000)
+		monedero.sacarPlata(1000)
+		assert.equals(0, monedero.plataActual())
+	}
+}
